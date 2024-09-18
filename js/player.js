@@ -46,7 +46,7 @@ export class PlayInstance {
     }
 
     resume(onsuccess) {
-        return this.start(onsuccess);
+        this.start(onsuccess);
     }
 
     pause() {
