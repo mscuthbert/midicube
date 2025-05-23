@@ -282,14 +282,27 @@ ES6 Conversion by Michael Scott Asato Cuthbert:
 
 ## Development
 
-Build midicube with:
+Build midicube by first running `npm install` once, and then running.
 
 ```
-npm run watch
+npm run dev
 ```
 
-to publish a new version change the version tag in package.json and run
+this will run `webpack` but watch for changes in the code and build a 
+non-minimified version. Start a webserver and navigate to the examples
+and use the `_dev.html` versions such as `Basic_dev.html` to use the
+dev script for debugging.
+
+To build a full version you can run
+
+```
+npm run build
+```
+
+To publish a new version change the version tag in package.json and run
 
 ```
 npm publish
 ```
+
+which will also build the version.
