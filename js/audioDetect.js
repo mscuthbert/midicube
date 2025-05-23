@@ -1,6 +1,6 @@
 /*
     ----------------------------------------------------------
-    MIDI.audioDetect : 0.3.2 : 2015-03-26
+    MIDI.audioDetect: 2025-05-23
     ----------------------------------------------------------
     https://github.com/mscuthbert/midicube
     ----------------------------------------------------------
@@ -8,6 +8,8 @@
     Test to see what types of <audio> MIME types are playable by the browser.
     ----------------------------------------------------------
 */
+
+import { IS_SAFARI } from './safariDetect';
 
 export const supports = {}; // object of supported file types
 
@@ -93,6 +95,10 @@ export function audioDetect(successCallback) {
         supports.ogg_mp3_precedence = 'mp3';
     } else {  // it is not clear that either can play; so might as well try ogg.
         supports.ogg_mp3_precedence = 'ogg';
+    }
+    if (IS_SAFARI) {
+        // Safari is not reporting proper playback ability.
+        supports.ogg_mp3_precedence = 'mp3';
     }
 
     // maybe nothing is supported

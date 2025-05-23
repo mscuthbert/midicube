@@ -11,7 +11,7 @@ midicube ${version} built on ${date_now}.
 `;
 
 module.exports = env => {
-    const mode = env.production ? 'production' : 'development';
+    const mode = env.development ? 'dev' : 'production';
     const filename = (mode === 'production') ? 'midicube.js' : 'midicube.dev.js';
     const config = {
         entry: './js/index.js',
