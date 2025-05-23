@@ -1,9 +1,9 @@
 /*!
     ----------------------------------------------------------
     midicube
-    2019-08-17
+    2025-05-23 - version 0.9
 
-    based on MIDI.js.Plugin : 0.3.4 : 2015-03-26
+    based on MIDI.js. v. 0.3.4 : 2015-03-26
 
     MIT License
     https://github.com/mscuthbert/midicube/
@@ -24,6 +24,6 @@
 
 /*!
  * 
- * midicube 0.6.2 built on 2022-12-31.
+ * midicube 0.9.0 built on 2025-05-23.
  *
  */

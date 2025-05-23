@@ -1,9 +1,9 @@
 /*!
     ----------------------------------------------------------
     midicube
-    2019-08-17
+    2025-05-23 - version 0.9
 
-    based on MIDI.js.Plugin : 0.3.4 : 2015-03-26
+    based on MIDI.js. v. 0.3.4 : 2015-03-26
 
     MIT License
     https://github.com/mscuthbert/midicube/
@@ -27,7 +27,7 @@ import 'regenerator-runtime/runtime';
 
 // no longer imported by default -- webmidi shim needs to be loaded separately
 // import './shim/WebAudioAPI.js';
-import { audioDetect } from './audioDetect.js';
+import { audioDetect, supports as ad_supports } from './audioDetect.js';
 import * as AudioTag from './plugin.audiotag.js';  // to be "export * as" when fully supported
 import * as WebAudio from './plugin.webaudio.js';  // to be "export * as" when fully supported
 import * as WebMIDI from './plugin.webmidi.js';
@@ -36,6 +36,8 @@ import * as Synesthesia from './synesthesia.js';
 import {
     GM, noteToKey, keyToNote, channels,
 } from './gm.js';  // to be "export * as" when fully supported
+
+export const audioDetect_supports = ad_supports;
 
 export {
     GM, noteToKey, keyToNote, channels,

@@ -1,4 +1,10 @@
-midicube is a fork of Mudcube's great but abandonware MIDI.js which adds ES6 modules and support.
+# midicube
+
+Midicube allows you to play MIDI notes in realtime or from MIDI files within the browser
+using soundfonts converted to Javascript.
+
+midicube is a fork of Mudcube's great but abandonware MIDI.js adding ES6 modules and support to it
+and updating it for changes in web browsers and security.
 
 To use in a javascript project:
 
@@ -33,6 +39,10 @@ MIDI.loadPlugin({
 });
 </script>
 ```
+
+Note that nearly all playing will start asynchronously after the soundfont has
+been loaded.  On modern web browsers you will also need interaction from the
+user such as a click to start sound.
 
 
 ## Code examples - from the repo
@@ -293,7 +303,7 @@ non-minimified version. Start a webserver and navigate to the examples
 and use the `_dev.html` versions such as `Basic_dev.html` to use the
 dev script for debugging.
 
-To build a full version you can run
+To build a full version you can run:
 
 ```
 npm run build
