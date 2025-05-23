@@ -324,6 +324,9 @@ export const setContext = (newCtx, onsuccess, onprogress, onerror) => {
 /* Load audio file: streaming | base64 | arraybuffer
 ---------------------------------------------------------------------- */
 export const loadAudio = (url, onsuccess, onerror) => {
+    /**
+     * url is often a data.audio Base64 string
+     */
     if (useStreamingBuffer) {
         const audio = new Audio();
         audio.src = url;
