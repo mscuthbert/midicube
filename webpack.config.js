@@ -1,17 +1,24 @@
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const PACKAGE = require('./package.json');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const version = PACKAGE.version;
 const date_now = new Date().toISOString().replace(/T.*/, '');
 
+const indexJs = fs.readFileSync('./js/index.js', 'utf8');
+const match = indexJs.match(/\/\*!([\s\S]*?)\*\//);
+const extractedBanner = match ? match[1].trim() : '';
 const BANNER = `
 midicube ${version} built on ${date_now}.
+
+${extractedBanner}
 `;
 
 module.exports = env => {
-    const mode = env.development ? 'dev' : 'production';
+    const mode = env.development ? 'development' : 'production';
     const filename = (mode === 'production') ? 'midicube.js' : 'midicube.dev.js';
     const config = {
         entry: './js/index.js',
@@ -22,7 +29,7 @@ module.exports = env => {
             libraryTarget: 'umd',
             umdNamedDefine: true,
         },
-        mode: 'production',
+        mode,
         devtool: 'source-map',
         // mode: 'development',
         // devtool: 'inline-source-map',
@@ -55,13 +62,23 @@ module.exports = env => {
         },
         optimization: {
             minimize: (mode === 'production'),
+            minimizer: [
+                new TerserPlugin({
+                    extractComments: false, // Disable moving comments to .LICENSE.txt
+                    terserOptions: {
+                        format: {
+                            comments: /^!/, // Keep comments that start with /*! (e.g., your banner)
+                        },
+                    },
+                }),
+            ],
         },
         plugins: [
-            new webpack.BannerPlugin({banner: BANNER}),
+            new webpack.BannerPlugin({banner: BANNER.trim()}),
             new ESLintPlugin({
                 failOnError: (mode === 'production'),
             }),
         ],
     };
     return config;
-}
+};
