@@ -1,26 +1,17 @@
 /*!
-    ----------------------------------------------------------
-    midicube
-    2025-05-23 - version 0.9
+  ----------------------------------------------------------
+  midicube
+  2025-05-23 - version 0.9.1
 
-    based on MIDI.js. v. 0.3.4 : 2015-03-26
+  based on MIDI.js. v. 0.3.4 : 2015-03-26
 
-    MIT License
-    https://github.com/mscuthbert/midicube/
+  MIT License
+  https://github.com/mscuthbert/midicube/
 
-    ----------------------------------------------------------
-    Inspired by javax.sound.midi (albeit a super simple version):
-        http://docs.oracle.com/javase/6/docs/api/javax/sound/midi/package-summary.html
-    ----------------------------------------------------------
-    Technologies
-    ----------------------------------------------------------
-        Web MIDI API - native support in Chrome. (Jazz plugin for safari, firefox, opera?)
-        Web Audio API - firefox 25+, chrome 10+, safari 6+, opera 15+, edge 18+
-            WebAudioShim allows Firefox < 25 to use, but not imported by default.
-        HTML5 Audio Tag - ie 9+, firefox 3.5+, chrome 4+, safari 4+,
-            opera 9.5+, ios 4+, android 2.3+
-    ----------------------------------------------------------
+  Technologies: Web MIDI API, Web Audio API, HTML5 Audio Tag
+  ----------------------------------------------------------
 */
+
 // not in core-js
 import 'regenerator-runtime/runtime';
 // core-js will monkey patch automatically
