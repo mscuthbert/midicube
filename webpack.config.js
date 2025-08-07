@@ -1,3 +1,5 @@
+// MIDICube main Webpack config.
+
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -48,12 +50,23 @@ module.exports = env => {
                                         modules: false,
                                         useBuiltIns: 'usage',
                                         corejs: 3,
+                                        targets: {
+                                            browsers: [
+                                                'last 3 years',
+                                                'not < 0.04% in US',
+                                                'not android < 80',  // bug in browserslist
+                                                'not ios <= 10',
+                                                'not samsung <= 4',
+                                                'not ie <= 12',  // all versions -- edge is separate
+                                            ],
+                                        },
+
                                     }
                                 ],
                             ],
                             plugins: [
                                 '@babel/plugin-transform-object-assign',
-                                '@babel/plugin-proposal-export-namespace-from',
+                                '@babel/plugin-transform-export-namespace-from',
                             ],
                         },
                     }],

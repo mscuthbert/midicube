@@ -163,7 +163,6 @@ export class PlayInstance {
                         const mx = t.length;
                         const scc = String.fromCharCode;
                         for (let z = 0; z < mx; z++) {
-                            // eslint-disable-next-line no-bitwise
                             ff[z] = scc(t.charCodeAt(z) & 255);
                         }
 
