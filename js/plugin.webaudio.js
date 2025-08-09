@@ -88,11 +88,6 @@ export const noteOn = (channelId, noteId, velocity, delay=0) => {
     }
 
 
-    // convert relative delay to absolute delay
-    if (delay < ctx.currentTime) {
-        delay += ctx.currentTime;
-    }
-
     // create audio buffer
     let source;
     if (useStreamingBuffer) {
@@ -121,17 +116,16 @@ export const noteOn = (channelId, noteId, velocity, delay=0) => {
     source.connect(source.gainNode);
 
     if (useStreamingBuffer) {
-        if (delay) {
-            return setTimeout(() => {
-                buffer.currentTime = 0;
-                buffer.play();
-            }, delay * 1000);
-        } else {
+        setTimeout(() => {
             buffer.currentTime = 0;
             buffer.play();
-        }
+        }, delay * 1000);
     } else {
-        source.start(delay || 0);
+        source.start(
+            delay < ctx.currentTime ?
+            delay + ctx.currentTime :
+            delay
+        );
     }
 
     sources[channelId + 'x' + noteId] = source;
@@ -153,33 +147,27 @@ export const noteOff = (channelId, noteId, delay=0) => {
     }
 
     if (buffer) {
-        if (delay < ctx.currentTime) {
-            delay += ctx.currentTime;
-        }
-
         const source = sources[channelId + 'x' + noteId];
         if (source) {
+            const startTime = delay < ctx.currentTime ? delay + ctx.currentTime : delay;
+
             if (source.gainNode) {
                 // @Miranet: 'the values of 0.2 and 0.3 could of course be used as
                 // a 'release' parameter for ADSR like time settings.'
                 // add { 'metadata': { release: 0.3 } } to soundfont files
                 const gain = source.gainNode.gain;
-                gain.linearRampToValueAtTime(gain.value, delay);
-                gain.linearRampToValueAtTime(-1.0, delay + 0.3);
+                gain.linearRampToValueAtTime(gain.value, startTime);
+                gain.linearRampToValueAtTime(-1.0, startTime + 0.3);
             }
             if (useStreamingBuffer) {
-                if (delay) {
-                    setTimeout(() => {
-                        buffer.pause();
-                    }, delay * 1000);
-                } else {
+                setTimeout(() => {
                     buffer.pause();
-                }
+                }, delay * 1000);
             } else {
                 if (source.noteOff) {
-                    source.noteOff(delay + 0.5);
+                    source.noteOff(startTime + 0.5);
                 } else {
-                    source.stop(delay + 0.5);
+                    source.stop(startTime + 0.5);
                 }
             }
 
@@ -217,17 +205,14 @@ export const stopAllNotes = () => {
     }
 
     for (const sid of Object.keys(sources)) {
-        let delay = 0;
-        if (delay < ctx.currentTime) {
-            delay += ctx.currentTime;
-        }
+        const startTime = ctx.currentTime;
         const source = sources[sid];
-        source.gain.linearRampToValueAtTime(1, delay);
-        source.gain.linearRampToValueAtTime(0, delay + 0.3);
+        source.gain.linearRampToValueAtTime(1, startTime);
+        source.gain.linearRampToValueAtTime(0, startTime + 0.3);
         if (source.noteOff) { // old api
-            source.noteOff(delay + 0.3);
+            source.noteOff(startTime + 0.3);
         } else { // new api
-            source.stop(delay + 0.3);
+            source.stop(startTime + 0.3);
         }
         delete sources[sid];
     }
