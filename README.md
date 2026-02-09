@@ -299,7 +299,7 @@ npm run dev
 ```
 
 this will run `webpack` but watch for changes in the code and build a 
-non-minimified version. Start a webserver and navigate to the examples
+non-minified version. Start a webserver and navigate to the examples
 and use the `_dev.html` versions such as `Basic_dev.html` to use the
 dev script for debugging.
 
@@ -316,3 +316,15 @@ npm publish
 ```
 
 which will also build the version.
+
+
+## Changes
+
+* 0.9.2 (2025-08-07) - Upgrade eslint to v9
+* 0.9.1 (2025-05-27) - Update webpack -- smaller builds
+* 0.9.0 (2025-05-23) - Support Safari 18.5; add back demos; better SF generator on node
+* 0.6.2 (2022-12-30) - Accept given tempo even in Jupyter/IPython
+* 0.6.0 (2019-08-31) - Remove IE support; use AudioContexts only; ES6 release
+* 0.5.x (2015-10-06) - Multiple Players on a page possible; split from mudcube/master
+
+(Prior changes are in mudcube's versions)
