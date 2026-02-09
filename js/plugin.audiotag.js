@@ -127,7 +127,9 @@ export const noteOn = (channel, note, velocity, delay) => {
 
 export const noteOff = (channel, note, delay) => {
     // MASC: Already commented out in MudCube version...
-    //      I see why!  clips all the notes!
+    //      I see why!  When uncommented clips all the notes!
+    //      Better to just ignore note-offs and let the notes continue (esp. for piano)
+    //      than to clip everything.
 
     // const id = noteToKey[note];
     // if (!notes[id]) {

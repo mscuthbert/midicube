@@ -5,6 +5,7 @@ GeneralMIDI
 */
 
 const GM_fixer = in_dict => {
+    // asId -> map 'Electric Guitar (clean)' to 'electric_guitar_clean
     const asId = name => name.replace(/[^a-z0-9 ]/gi, '').replace(/ /g, '_').toLowerCase();
     const res = {
         byName: { },
@@ -16,7 +17,9 @@ const GM_fixer = in_dict => {
             if (!instrument) {
                 continue;
             }
+            // '28 Electric Guitar (clean)' -> 28
             const id = parseInt(instrument.substr(0, instrument.indexOf(' ')), 10);
+            // 0-indexed
             const programNumber = id - 1;
             const name = instrument.replace(id + ' ', '');
             const nameId = asId(name);
@@ -36,7 +39,7 @@ const GM_fixer = in_dict => {
     return res;
 };
 
-export const GM = GM_fixer({
+export const gm_name_data = {
     'Piano': [
         '1 Acoustic Grand Piano',
         '2 Bright Acoustic Piano',
@@ -197,7 +200,16 @@ export const GM = GM_fixer({
         '127 Applause',
         '128 Gunshot',
     ],
-});
+};
+
+// GM consists of a record with this format:
+// {
+//    byName: {accordion: { id: 'accordion', name: 'Accordion', program: 21, category: 'Organ' }, ... },
+//    byId: {..., 21: { id: 'accordion' ... }, ...},
+//    byCategory: { organ: [ {id...}, {id...} ],  piano: [...] },
+// }
+export const GM = GM_fixer(gm_name_data);
+
 
 /* channels
 --------------------------------------------------- */
@@ -303,10 +315,10 @@ export const keyToNote = {}; // C8  == 108
 export const noteToKey = {}; // 108 ==  C8
 
 (function helper_set_mapping() {
-    const A0 = 0x15; // first note
-    const C8 = 0x6C; // last note
+    const C_minus1 = 0x00; // first note
+    const G_10 = 0x7F; // last note
     const number2key = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-    for (let n = A0; n <= C8; n++) {
+    for (let n = C_minus1; n <= G_10; n++) {
         const octave = Math.floor((n - 12) / 12);
         const name = number2key[n % 12] + octave;
         keyToNote[name] = n;
