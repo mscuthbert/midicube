@@ -134,7 +134,14 @@ export const noteOn = (channelId, noteId, velocity, delay=0) => {
         source.start(delay || 0);
     }
 
-    sources[channelId + 'x' + noteId] = source;
+    // Queue sources per (channel, note) so repeated triggers of the same
+    // pitch on the same channel don't drop the earlier source ref. The
+    // matching noteOff drains the oldest source from the FIFO.
+    const sourceKey = channelId + 'x' + noteId;
+    if (!sources[sourceKey]) {
+        sources[sourceKey] = [];
+    }
+    sources[sourceKey].push(source);
 
     return source;
 };
@@ -157,15 +164,23 @@ export const noteOff = (channelId, noteId, delay=0) => {
             delay += ctx.currentTime;
         }
 
-        const source = sources[channelId + 'x' + noteId];
+        const sourceKey = channelId + 'x' + noteId;
+        const queue = sources[sourceKey];
+        const source = queue && queue.shift();
         if (source) {
+            if (queue.length === 0) {
+                delete sources[sourceKey];
+            }
             if (source.gainNode) {
                 // @Miranet: 'the values of 0.2 and 0.3 could of course be used as
                 // a 'release' parameter for ADSR like time settings.'
                 // add { 'metadata': { release: 0.3 } } to soundfont files
+                // Ramp to 0, not -1.0: negative gain is phase-inverted but
+                // full amplitude, so a -1.0 target re-energized the sample
+                // between delay and delay+0.5 instead of fading it out.
                 const gain = source.gainNode.gain;
                 gain.linearRampToValueAtTime(gain.value, delay);
-                gain.linearRampToValueAtTime(-1.0, delay + 0.3);
+                gain.linearRampToValueAtTime(0, delay + 0.3);
             }
             if (useStreamingBuffer) {
                 if (delay) {
@@ -183,7 +198,6 @@ export const noteOff = (channelId, noteId, delay=0) => {
                 }
             }
 
-            delete sources[channelId + 'x' + noteId];
             return source;
         }
     }
@@ -221,13 +235,14 @@ export const stopAllNotes = () => {
         if (delay < ctx.currentTime) {
             delay += ctx.currentTime;
         }
-        const source = sources[sid];
-        source.gain.linearRampToValueAtTime(1, delay);
-        source.gain.linearRampToValueAtTime(0, delay + 0.3);
-        if (source.noteOff) { // old api
-            source.noteOff(delay + 0.3);
-        } else { // new api
-            source.stop(delay + 0.3);
+        for (const source of sources[sid]) {
+            source.gain.linearRampToValueAtTime(1, delay);
+            source.gain.linearRampToValueAtTime(0, delay + 0.3);
+            if (source.noteOff) { // old api
+                source.noteOff(delay + 0.3);
+            } else { // new api
+                source.stop(delay + 0.3);
+            }
         }
         delete sources[sid];
     }
