@@ -309,7 +309,7 @@ To build a full version you can run:
 npm run build
 ```
 
-To publish a new version change the version tag in package.json and run
+To publish a new version (1) change the version tag in package.json (2) run npm install and (3) run
 
 ```
 npm publish
@@ -320,11 +320,13 @@ which will also build the version.
 
 ## Changes
 
-* 0.9.2 (2025-08-07) - Upgrade eslint to v9
-* 0.9.1 (2025-05-27) - Update webpack -- smaller builds
-* 0.9.0 (2025-05-23) - Support Safari 18.5; add back demos; better SF generator on node
-* 0.6.2 (2022-12-30) - Accept given tempo even in Jupyter/IPython
-* 0.6.0 (2019-08-31) - Remove IE support; use AudioContexts only; ES6 release
-* 0.5.x (2015-10-06) - Multiple Players on a page possible; split from mudcube/master
+* 0.10.1 (2026-05-12) - Proper fade out and scheduled NoteOffs
+* 0.10.0 (2026-02-08) - Add documentation, Support playing notes below A0 and above C8 
+* 0.9.2 (2025-08-07)  - Upgrade eslint to v9
+* 0.9.1 (2025-05-27)  - Update webpack -- smaller builds
+* 0.9.0 (2025-05-23)  - Support Safari 18.5; add back demos; better SF generator on node
+* 0.6.2 (2022-12-30)  - Accept given tempo even in Jupyter/IPython
+* 0.6.0 (2019-08-31)  - Remove IE support; use AudioContexts only; ES6 release
+* 0.5.x (2015-10-06)  - Multiple Players on a page possible; split from mudcube/master
 
 (Prior changes are in mudcube's versions)
