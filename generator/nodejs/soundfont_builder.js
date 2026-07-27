@@ -30,12 +30,18 @@ const allTypes = ['wav', ...outputTypes];
 
 const keys = [];
 
-const A0 = 0x15; // first note
-const C8 = 0x6C; // last note
+// The range of notes to build.  A0 to C8 is the range of a normal piano and
+// of nearly all soundfonts, so it is the default.  midicube itself can play
+// any MIDI note from 0x00 (C-1) to 0x7F (G9), so widen these if the source
+// samples go further -- e.g. 0x0C (C0) up to 0x78 (C9).
+const lowestToBuild = 0x15; // A0
+const highestToBuild = 0x6C; // C8
 const keysFlats = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 const keysSharps1 = ['C', 'Cs', 'D', 'Ds', 'E', 'F', 'Fs', 'G', 'Gs', 'A', 'As', 'B'];
-for (let n = A0; n <= C8; n++) {
-    const octave = (n - 12) / 12 >> 0;
+for (let n = lowestToBuild; n <= highestToBuild; n++) {
+    // Math.floor, not >> 0: truncation toward zero would name notes below C0
+    // as octave 0 ('F0') instead of octave -1 ('F-1').
+    const octave = Math.floor((n - 12) / 12);
     keys.push({
         number: n,
         key: keysFlats[n % 12] + octave,

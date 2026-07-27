@@ -311,14 +311,16 @@ export const setSolo = (channelId, truthy, delay) => {
 
 /* note conversions
 --------------------------------------------------- */
+// Both cover the full MIDI range, C-1 (0) through G9 (127); soundfonts
+// generally supply only a subset, most often A0 (21) through C8 (108).
 export const keyToNote = {}; // C8  == 108
 export const noteToKey = {}; // 108 ==  C8
 
 (function helper_set_mapping() {
     const C_minus1 = 0x00; // first note
-    const G_10 = 0x7F; // last note
+    const G9 = 0x7F; // last note
     const number2key = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-    for (let n = C_minus1; n <= G_10; n++) {
+    for (let n = C_minus1; n <= G9; n++) {
         const octave = Math.floor((n - 12) / 12);
         const name = number2key[n % 12] + octave;
         keyToNote[name] = n;

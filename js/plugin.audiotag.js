@@ -61,17 +61,29 @@ export const playChannel = (channel, in_note) => {
     const instrumentId = GM.byId[instrument].id;
     const note = notes[in_note];
     if (note) {
-        const instrumentNoteId = instrumentId + '' + note.id;
-        const nid = (buffer_nid + 1) % audioBuffers.length;
-        const audio = audioBuffers[nid];
-        notesOn[nid] = instrumentNoteId;
-        if (!shared_root_info.Soundfont[instrumentId]) {
+        const soundfont = shared_root_info.Soundfont[instrumentId];
+        if (!soundfont) {
             if (DEBUG) {
                 console.log('404', instrumentId);
             }
             return;
         }
-        audio.src = shared_root_info.Soundfont[instrumentId][note.id];
+        // Soundfonts supply whatever part of the keyboard they like -- most run
+        // A0 to C8, but some are narrower and a few reach below A0 or above C8.
+        // As in the webaudio plugin, a note the soundfont has no sample for
+        // simply doesn't sound; without this check the src would be set to
+        // undefined and the browser would request a bogus URL.
+        if (!soundfont[note.id]) {
+            if (DEBUG) {
+                console.log('no sample for', instrumentId, note.id);
+            }
+            return;
+        }
+        const instrumentNoteId = instrumentId + '' + note.id;
+        const nid = (buffer_nid + 1) % audioBuffers.length;
+        const audio = audioBuffers[nid];
+        notesOn[nid] = instrumentNoteId;
+        audio.src = soundfont[note.id];
         audio.volume = volumes[channel] / 127;
         audio.play();
         buffer_nid = nid;
