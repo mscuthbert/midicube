@@ -6,7 +6,9 @@
  * When OGG support is confirmed from elsewhere, will remove this file.
  */
 export const IS_SAFARI_DESKTOP = typeof window.safari !== 'undefined';
-export const IS_FIREFOX = window.navigator.userAgent.toLowerCase().includes('firefox');
+// a regex test rather than .includes() -- babel cannot tell String.includes from
+// Array.includes, so .includes() drags the whole core-js polyfill into the bundle.
+export const IS_FIREFOX = /firefox/i.test(window.navigator.userAgent);
 export const SUPPORTS_SHADOW_SELECTION = typeof window.ShadowRoot.prototype.getSelection === 'function';
 export const SUPPORTS_BEFORE_INPUT = typeof window.InputEvent.prototype.getTargetRanges === 'function';
 export const IS_SAFARI = (

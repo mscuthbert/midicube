@@ -1,6 +1,6 @@
 {
   "name": "midicube",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "Library to assist in creating ES6 MIDI apps.",
   "author": "Michael Deal",
   "contributors": [
@@ -23,23 +23,25 @@
   },
   "main": "./releases/midicube.js",
   "license": "MIT",
-  "devDependencies": {
-    "@babel/core": "^7.28.0",
-    "@babel/plugin-transform-export-namespace-from": "^7.27.1",
-    "@babel/plugin-transform-object-assign": "^7.27.1",
-    "@babel/preset-env": "^7.28.0",
-    "babel-loader": "^9.1.0",
-    "core-js": "^3.45.0",
-    "eslint": "^9.32.0",
-    "eslint-config-airbnb-extended": "^2.1.2",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-webpack-plugin": "^5.0.2",
-    "globals": "^16.3.0",
-    "terser-webpack-plugin": "^5.3.14",
-    "webpack": "^5.106.2",
-    "webpack-cli": "^5.1.4"
+  "_why": {
+    "core-js": "useBuiltIns: 'usage' in webpack.config.js pulls polyfills from it",
+    "eslint-plugin-import": "Used in flat eslint-config-airbnb-extended legacy.js",
+    "globals": "for eslint.config.js"
   },
-  "dependencies": {
-    "regenerator-runtime": "^0.13.11"
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/plugin-transform-export-namespace-from": "^7.29.7",
+    "@babel/plugin-transform-object-assign": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "babel-loader": "^10.1.1",
+    "core-js": "^3.49.0",
+    "eslint": "^9.32.0",
+    "eslint-config-airbnb-extended": "^2.3.3",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-webpack-plugin": "^6.0.0",
+    "globals": "^17.8.0",
+    "terser-webpack-plugin": "^5.6.1",
+    "webpack": "^5.109.1",
+    "webpack-cli": "^7.2.1"
   }
 }

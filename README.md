@@ -311,22 +311,22 @@ npm run build
 
 To publish a new version:
 
-1. Update `version` in `package.json`.
-2. Add a line for it to the `## Changes` section below.
-3. Run `npm install`, so that `package-lock.json` picks up the new version.
-4. Run `npm publish`. Its `prepublishOnly` step runs webpack and copies the
+1. Run `npm login`. Note: npm labels a passkey a "Security Key".
+2. Update `version` in `package.json`.
+3. Add a line documenting changes to the `## Changes` section below.
+4. Run `npm install`, so that `package-lock.json` picks up the new version.
+5. Run `npm publish`. Its `prepublishOnly` step runs webpack and copies the
    built `midicube.js` and `midicube.js.map` into `releases/`, which is where
    the package's `main` points.
-5. Commit what the publish changed: `package.json`, `package-lock.json`,
-   `README.md`, and the regenerated files in `releases/`. `npm publish` writes
-   those but does not commit them.
+6. Commit what the publish changed: `package.json`, `package-lock.json`,
+   `README.md`, and the regenerated files in `releases/`.
 
 The version and build date in the banner of the built file are taken from
 `package.json` by webpack, so no source file needs a hand-edited version.
 
 
 ## Changes
-
+* 0.10.2 (2026-07-27) - SF Generators support making wider-range soundfonts. Update deps.
 * 0.10.1 (2026-05-12) - Proper fade out and scheduled NoteOffs
 * 0.10.0 (2026-02-08) - Add documentation, Support playing notes below A0 and above C8 
 * 0.9.2 (2025-08-07)  - Upgrade eslint to v9

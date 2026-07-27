@@ -11,8 +11,6 @@
   ----------------------------------------------------------
 */
 
-// not in core-js
-import 'regenerator-runtime/runtime';
 // core-js will monkey patch automatically
 
 // no longer imported by default -- webmidi shim needs to be loaded separately
