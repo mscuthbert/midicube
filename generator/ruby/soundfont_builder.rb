@@ -19,7 +19,8 @@
 # Usage:
 #
 # 1) Install the above dependencies.
-# 2) Edit BUILD_DIR, SOUNDFONT, and INSTRUMENTS as required.
+# 2) Edit BUILD_DIR, SOUNDFONT, INSTRUMENTS, and (if the font covers notes
+#    outside a piano's range) LOWEST_TO_BUILD / HIGHEST_TO_BUILD as required.
 # 3) Run without any argument.
 
 require 'base64'
@@ -30,6 +31,13 @@ include FileUtils
 
 BUILD_DIR = "./soundfont" # Output path
 SOUNDFONT = "../sf2/redco/TR-808-Drums.SF2" # Soundfont file path
+
+# The range of notes to build.  A0 to C8 is the range of a normal piano and of
+# nearly all soundfonts, so it is the default.  midicube itself can play any
+# MIDI note from 0 (C-1) to 127 (G9), so widen these if the font supports it --
+# e.g. 0x0C (C0) up to 0x78 (C9).
+LOWEST_TO_BUILD = 0x15  # A0
+HIGHEST_TO_BUILD = 0x6C # C8
 
 # This script will generate MIDI.js-compatible instrument JS files for
 # all instruments in the below array. Add or remove as necessary.
@@ -118,17 +126,19 @@ def note_to_int(note, octave)
 end
 
 def int_to_note(value)
-  raise "Bad Value" if value < MIDI_C0
+  raise "Bad Value: #{value}" if value < 0 || value > 127
   reverse_notes = NOTES.invert
   value -= MIDI_C0
+  # Ruby's / and % both round toward negative infinity, so notes below C0
+  # correctly come out as octave -1 ("C-1" is MIDI note 0).
   octave = value / 12
   note = value % 12
   return { key: reverse_notes[note],
            octave: octave }
 end
 
-# Run a quick table validation
-MIDI_C0.upto(100) do |x|
+# Run a quick table validation over the whole MIDI range
+0.upto(127) do |x|
   note = int_to_note x
   raise "Broken table" unless note_to_int(note[:key], note[:octave]) == x
 end
@@ -192,7 +202,7 @@ def generate_audio(program)
   ogg_js_file = open_js_file(instrument_key, "ogg")
   mp3_js_file = open_js_file(instrument_key, "mp3")
 
-  note_to_int("A", 0).upto(note_to_int("C", 8)) do |note_value|
+  LOWEST_TO_BUILD.upto(HIGHEST_TO_BUILD) do |note_value|
     note = int_to_note(note_value)
     output_name = "#{note[:key]}#{note[:octave]}"
     output_path_prefix = BUILD_DIR + "/" + output_name
