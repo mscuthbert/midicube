@@ -9,16 +9,12 @@ it on your own initiative.
 
 ## Releasing a new version
 
-The version appears in more than one place, and the banner is easy to forget:
+The checklist lives in `README.md`, under "Development". Follow it from there
+rather than from memory, and if the steps change, keep that the only copy.
 
-* `package.json` — the authoritative version.
-* `js/index.js` — the banner comment at the top of the file carries the version
-  and its release date. **Update it whenever the version changes**; it ships in
-  `releases/midicube.js` and is what users see in the built bundle.
-* `README.md` — add a line to the `## Changes` section.
-
-`npm run prepublishOnly` builds and copies into `releases/`, so make the banner
-correct before publishing.
+`package.json` holds the one authoritative version; webpack fills the built
+file's banner in from it. No source file carries a hand-edited version, so
+don't add one back.
 
 ## Note names and ranges
 

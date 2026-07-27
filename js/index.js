@@ -1,7 +1,6 @@
 /*!
   ----------------------------------------------------------
   midicube
-  2026-05-12 - version 0.10.1
 
   based on MIDI.js. v. 0.3.4 : 2015-03-26
 
@@ -11,6 +10,9 @@
   Technologies: Web MIDI API, Web Audio API, HTML5 Audio Tag
   ----------------------------------------------------------
 */
+
+// webpack prepends the version and build date to the banner above, taking
+// them from package.json; do not add a hand-maintained version here.
 
 // not in core-js
 import 'regenerator-runtime/runtime';

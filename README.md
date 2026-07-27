@@ -309,13 +309,20 @@ To build a full version you can run:
 npm run build
 ```
 
-To publish a new version (1) change the version tag in package.json (2) run npm install and (3) run
+To publish a new version:
 
-```
-npm publish
-```
+1. Update `version` in `package.json`.
+2. Add a line for it to the `## Changes` section below.
+3. Run `npm install`, so that `package-lock.json` picks up the new version.
+4. Run `npm publish`. Its `prepublishOnly` step runs webpack and copies the
+   built `midicube.js` and `midicube.js.map` into `releases/`, which is where
+   the package's `main` points.
+5. Commit what the publish changed: `package.json`, `package-lock.json`,
+   `README.md`, and the regenerated files in `releases/`. `npm publish` writes
+   those but does not commit them.
 
-which will also build the version.
+The version and build date in the banner of the built file are taken from
+`package.json` by webpack, so no source file needs a hand-edited version.
 
 
 ## Changes
