@@ -71,8 +71,7 @@ export const playChannel = (channel, in_note) => {
         // Soundfonts supply whatever part of the keyboard they like -- most run
         // A0 to C8, but some are narrower and a few reach below A0 or above C8.
         // As in the webaudio plugin, a note the soundfont has no sample for
-        // simply doesn't sound; without this check the src would be set to
-        // undefined and the browser would request a bogus URL.
+        // simply doesn't sound.
         if (!soundfont[note.id]) {
             if (DEBUG) {
                 console.log('no sample for', instrumentId, note.id);

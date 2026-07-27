@@ -11,9 +11,6 @@
   ----------------------------------------------------------
 */
 
-// webpack prepends the version and build date to the banner above, taking
-// them from package.json; do not add a hand-maintained version here.
-
 // not in core-js
 import 'regenerator-runtime/runtime';
 // core-js will monkey patch automatically

@@ -7,6 +7,13 @@ so there is only one set of instructions to keep current.
 If you believe something here is wrong or missing, say so and ask; do not edit
 it on your own initiative.
 
+## Comments
+
+Do not document fixes to prior bugs or mistakes in committed files or code.
+Comments should say what the code does and why it is the way it is, not what it
+used to do wrong. The rare exception is a mistake we are genuinely likely to
+make again -- and then write it as a warning about the code, not as history.
+
 ## Releasing a new version
 
 The checklist lives in `README.md`, under "Development". Follow it from there
