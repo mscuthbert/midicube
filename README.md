@@ -326,6 +326,7 @@ The version and build date in the banner of the built file are taken from
 
 
 ## Changes
+* 0.10.3 (2026-08-05) - Restore the phase-cancelling noteOff release; fixes notes not fading to silence since 0.10.1.
 * 0.10.2 (2026-07-27) - SF Generators support making wider-range soundfonts. Update deps.
 * 0.10.1 (2026-05-12) - Proper fade out and scheduled NoteOffs
 * 0.10.0 (2026-02-08) - Add documentation, Support playing notes below A0 and above C8 

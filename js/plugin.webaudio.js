@@ -22,6 +22,9 @@ const effects = {};
 let masterVolume = 127;
 const audioBuffers = {};
 
+// Fade-out applied at noteOff, in seconds.
+const RELEASE_TIME = 0.3;
+
 export const connect = opts => {
     setContext(ctx || createAudioContext(), opts.onsuccess);
 };
@@ -175,12 +178,14 @@ export const noteOff = (channelId, noteId, delay=0) => {
                 // @Miranet: 'the values of 0.2 and 0.3 could of course be used as
                 // a 'release' parameter for ADSR like time settings.'
                 // add { 'metadata': { release: 0.3 } } to soundfont files
-                // Ramp to 0, not -1.0: negative gain is phase-inverted but
-                // full amplitude, so a -1.0 target re-energized the sample
-                // between delay and delay+0.5 instead of fading it out.
+                // -1.0 is the silent target here, not 0: noteOn also connects
+                // the source dry to the destination, so the audible signal is
+                // (1 + gain) * dry. At -1.0 the gain path exactly cancels the
+                // dry path. The velocity formula's trailing `* 2 - 1` is the
+                // other half of the same arrangement.
                 const gain = source.gainNode.gain;
                 gain.linearRampToValueAtTime(gain.value, delay);
-                gain.linearRampToValueAtTime(0, delay + 0.3);
+                gain.linearRampToValueAtTime(-1.0, delay + RELEASE_TIME);
             }
             if (useStreamingBuffer) {
                 if (delay) {
@@ -237,11 +242,11 @@ export const stopAllNotes = () => {
         }
         for (const source of sources[sid]) {
             source.gain.linearRampToValueAtTime(1, delay);
-            source.gain.linearRampToValueAtTime(0, delay + 0.3);
+            source.gain.linearRampToValueAtTime(0, delay + RELEASE_TIME);
             if (source.noteOff) { // old api
-                source.noteOff(delay + 0.3);
+                source.noteOff(delay + RELEASE_TIME);
             } else { // new api
-                source.stop(delay + 0.3);
+                source.stop(delay + RELEASE_TIME);
             }
         }
         delete sources[sid];
