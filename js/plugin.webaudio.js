@@ -22,6 +22,12 @@ const effects = {};
 let masterVolume = 127;
 const audioBuffers = {};
 
+// Fade-out applied at noteOff, in seconds. Long enough to avoid a click,
+// short enough that the tail does not bleed into the following note --
+// sustaining soundfonts (winds, brass, strings) hold full volume until
+// this ramp, so anything longer reads as legato.
+const RELEASE_TIME = 0.04;
+
 export const connect = opts => {
     setContext(ctx || createAudioContext(), opts.onsuccess);
 };
@@ -176,11 +182,11 @@ export const noteOff = (channelId, noteId, delay=0) => {
                 // a 'release' parameter for ADSR like time settings.'
                 // add { 'metadata': { release: 0.3 } } to soundfont files
                 // Ramp to 0, not -1.0: negative gain is phase-inverted but
-                // full amplitude, so a -1.0 target re-energized the sample
-                // between delay and delay+0.5 instead of fading it out.
+                // full amplitude, so a -1.0 target re-energizes the sample
+                // instead of fading it out.
                 const gain = source.gainNode.gain;
                 gain.linearRampToValueAtTime(gain.value, delay);
-                gain.linearRampToValueAtTime(0, delay + 0.3);
+                gain.linearRampToValueAtTime(0, delay + RELEASE_TIME);
             }
             if (useStreamingBuffer) {
                 if (delay) {
@@ -192,9 +198,9 @@ export const noteOff = (channelId, noteId, delay=0) => {
                 }
             } else {
                 if (source.noteOff) {
-                    source.noteOff(delay + 0.5);
+                    source.noteOff(delay + RELEASE_TIME + 0.01);
                 } else {
-                    source.stop(delay + 0.5);
+                    source.stop(delay + RELEASE_TIME + 0.01);
                 }
             }
 
