@@ -311,11 +311,12 @@ npm run build
 
 To publish a new version:
 
-1. Run `npm login`. Note: npm labels a passkey a "Security Key".
+1. Run `npm login`. Note: npm labels a passkey a "Security Key". Sometimes fails first time; do twice.
 2. Update `version` in `package.json`.
 3. Add a line documenting changes to the `## Changes` section below.
 4. Run `npm install`, so that `package-lock.json` picks up the new version.
-5. Run `npm publish`. Its `prepublishOnly` step runs webpack and copies the
+5. Run `npm publish`. It will ask for your stupid fingerprint again!
+   Its `prepublishOnly` step runs webpack and copies the
    built `midicube.js` and `midicube.js.map` into `releases/`, which is where
    the package's `main` points.
 6. Commit what the publish changed: `package.json`, `package-lock.json`,
