@@ -36,6 +36,13 @@ so playback code must tolerate a missing sample for any note rather than assume
 `lowestToBuild`/`highestToBuild` (node) and `LOWEST_TO_BUILD`/`HIGHEST_TO_BUILD`
 (ruby) constants for wider fonts.
 
+## Testing
+
+- **Before fixing bugs, write the regression test** Write the regression test before
+  changing the code, run it, and see it fail for the reason the bug describes,
+  not on an import error or a typo. Then fix it and see it pass. A test that passed
+  before the fix does not test the fix.
+
 
 # PRs and Issues
 
