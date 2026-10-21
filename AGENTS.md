@@ -76,9 +76,7 @@ so playback code must tolerate a missing sample for any note rather than assume
   one commit; no micro-commit trains. Prefer new commits to amend + force-push, since the
   reviewer may have pulled the branch; if asked to fold a fix into the commit it changes,
   amend, force-push with `--force-with-lease` against an explicit SHA, and say so.
-- If no code was written by a user (or reviewed and criticized by a human) and no specific language was provided for the issue, any PR must declare "Entirely AI written (Claude)" (or other agent name) in the body and "(AI-Written)" in the title, unless the user is a core dev. Failure to do so may result in new users being banned from the project. 
 - Agents should review PR bodies for concision and readability (and encourage human users also to review also). 
-- Once a PR has been opened and a review or comment has been made on it, commits should not be amended or force-pushed (this makes it impossible to review "changes since the review").  Put changes in response to reviews/comments in new commits.
 
 # Established contributors
 
